@@ -170,7 +170,7 @@
     }
 
     if(x == "Yearly") {
-      var a = y.split(',')[3];
+      var a =  y.split(',')[3];
       console.log(a)
     document.getElementById("indicateprice").innerHTML = a;
     }
@@ -184,6 +184,7 @@
         url:'/delete-service/'+servId,
         method:'get',
         beforeSend:function(){
+          /* dsghr */
           return confirm("Are you sure want to remove the service ?");
         },
         success:(response) =>{
@@ -250,7 +251,7 @@
     })
   };
 
-     /* dsghr */
+     
 
   </script>
   
