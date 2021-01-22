@@ -44,5 +44,215 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script>
+
+    $("#contact-us").submit((e)=>{
+            e.preventDefault()
+            $.ajax({
+                url:"https://script.google.com/macros/s/AKfycbx8w7VLWRaf7JDYBLr7GvLWwAOLGjEWcIUvJZBBRjsojeDNB2FBAd4M/exec",
+                data:$("#contact-us").serialize(),
+                method:"post",
+                success:function (response){
+                    alert("Form submitted successfully")
+                    window.location.reload()
+                    //window.location.href="https://google.com"
+                },
+                error:function (err){
+                    alert("Something Error")
+    
+                }
+            })
+        })
+
+    function myFunction() {
+    var x = document.getElementById("inlineFormCustomSelectPref").value;
+    var a = x.split('-')[1];
+    document.getElementById("indicateprice").innerHTML = a;
+    }
+
+    $("#service-form").submit((e)=>{
+            e.preventDefault()
+            $("#add-button-submit").hide()
+            $("#loader-submit").show()
+            $.ajax({
+                url:"/add-to-cart",
+                data:$("#service-form").serialize(),
+                method:"post",
+                success:function (response){
+                    $("#jerome_green_bg").show()
+                    $("#loader-submit").hide()
+                    if(response.status == "added"){
+                      alert("Service added to your cart, Go to cart and book your service")
+                      location.reload();
+                    } else if (response.status == "needLogin"){
+                      alert("You need to login to add a service to your cart");
+                      window.location.href="/login"
+                    } else if (response.status == "filled") {
+                      alert("Slot is already booked");
+                      location.reload();
+                    }else {
+                      alert("Server Error")
+                      location.reload();
+                    }
+                },
+                error:function (err){
+                    alert("Something Error")
+                    location.reload();
+                }
+            })
+        });
+
+  function confirmBooking(){
+
+    $.ajax({
+        url:'/place-order',
+        method:'get',
+        success:(response) =>{
+            if(response.status == "placed"){
+              alert("Order placed successfully\nThank you for your booking")
+              window.location.href="/"
+            } else{
+              alert('Server Error')
+            }
+        }
+    })
+  };
+
+  $("#subs-form").submit((e)=>{
+            e.preventDefault()
+            $("#add-button-submit").hide()
+            $("#loader-submit").show()
+            $.ajax({
+                url:"/subscribe",
+                data:$("#subs-form").serialize(),
+                method:"post",
+                success:function (response){
+                    $("#jerome_green_bg").show()
+                    $("#loader-submit").hide()
+                    if(response.status == "added"){
+                      alert("Service added to your cart, Go to cart and book your service")
+                      location.reload();
+                    } else if (response.status == "needLogin"){
+                      alert("You need to login to add a service to your cart");
+                      window.location.href="/login"
+                    } else if (response.status == "filled") {
+                      alert("Slot is already booked");
+                      location.reload();
+                    }else {
+                      alert("Server Error")
+                      location.reload();
+                    }
+                },
+                error:function (err){
+                    alert("Something Error")
+                    location.reload();
+                }
+            })
+        });
+
+
+    function subFunction() {
+    var x = document.getElementById("period").value;
+    var y = document.getElementById("service").value;
+    console.log(x,y);
+
+    if(x == "Quarterly") {
+      var a = y.split(',')[1];
+      console.log(a)
+    document.getElementById("indicateprice").innerHTML = a;
+    
+    }
+
+    if(x == "Half yearly") {
+      var a = y.split(',')[2];
+      console.log(a)
+    document.getElementById("indicateprice").innerHTML = a;
+    }
+
+    if(x == "Yearly") {
+      var a = y.split(',')[3];
+      console.log(a)
+    document.getElementById("indicateprice").innerHTML = a;
+    }
+
+    
+    };      
+
+  function deleteService(servId){
+
+    $.ajax({
+        url:'/delete-service/'+servId,
+        method:'get',
+        beforeSend:function(){
+          return confirm("Are you sure want to remove the service ?");
+        },
+        success:(response) =>{
+            if(response.status == "deleted"){
+              window.location.reload()
+            } else{
+              alert('Server Error')
+            }
+        }
+    })
+  }
+
+  function deletAddress(){
+
+    $.ajax({
+        url:'/delete-address',
+        method:'get',
+        beforeSend:function(){
+          return confirm("Are you sure want to remove the address ?");
+        },
+        success:(response) =>{
+            if(response.status == "deleted"){
+              window.location.reload()
+            } else{
+              alert('Server Error')
+            }
+        }
+    })
+  }
+
+  function cancelOrder(orderId){
+
+    $.ajax({
+        url:'/cancel-order/'+orderId,
+        method:'get',
+        beforeSend:function(){
+          return confirm("Are you sure want to cancel the order ?");
+        },
+        success:(response) =>{
+            if(response.status == "deleted"){
+              window.location.reload()
+            } else{
+              alert('Server Error')
+            }
+        }
+    })
+  }
+
+  function cancelSubs(orderId){
+
+    $.ajax({
+        url:'/cancel-subs/'+orderId,
+        method:'get',
+        beforeSend:function(){
+          return confirm("Are you sure want to cancel the order ?");
+        },
+        success:(response) =>{
+            if(response.status == "deleted"){
+              window.location.reload()
+            } else{
+              alert('Server Error')
+            }
+        }
+    })
+  };
+
+     /* dsghr */
+
+  </script>
+  
   </body>
 </html>
